@@ -8,7 +8,7 @@ Based on [cep-svelte-starter](https://github.com/Klustre/cep-svelte-starter) fro
 
 ## General Features:
 
-- Bundles Extendscript, Javascript and Svelte code
+- Bundles hostapp Typescript, panel Typescript, and Svelte code
 - Automatically generates `manifest.xml` and `.debug`
 - Supports multiple extensions in the extension bundle
 - Includes Adobe's Spectrum CSS
