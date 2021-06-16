@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "../../dist/",
+    "noImplicitAny": true,
+    "target": "es5",
+    "allowJs": true,
+    "strict": true,
+    "noLib": true,
+    "types": ["AfterEffects/2018", "node"],
+    "typeRoots": ["../../node_modules/types-for-adobe", "./typings"]
+  },
+  "include": [
+    "./**/*",
+    "../../node_modules/types-for-adobe/shared/PlugPlugExternalObject.ts",
+    "../../node_modules/extendscript-es5-shim-ts/index.d.ts"
+  ]
+}

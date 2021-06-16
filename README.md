@@ -1,76 +1,98 @@
-# Svelte Starter
+# ZL Svelte Template
 
-This is a simple starter for [Svelte](https://svelte.dev) in Adobe [CEP](https://github.com/Adobe-CEP/CEP-Resources) using [Webpack](https://github.com/webpack/webpack). Huge thanks to [Koen Schmeets](https://github.com/vespakoen) for helping out with Webpack.
+Based on [cep-svelte-starter](https://github.com/Klustre/cep-svelte-starter) from [@klustre](https://github.com/Klustre).
+
+---
 
 # Features
 
-- Bundles Extendscript, Javascript and Svelte code
+## General Features:
+
 - Automatically generates `manifest.xml` and `.debug`
 - Supports multiple extensions in the extension bundle
-- Allows separate Extendscript files for each Adobe CC app
-- Includes Adobe's [Spectrum CSS](https://github.com/adobe/spectrum-css)
-- Symlinks the panel to the extensions folder 
+- gulp-based build system
+- Compile to jsxbin on `npm run build`
+- Symlinks the panel to the extensions folder
 - Sets the CSXS debug flags
-- Watches files for changes
-- Does HMR (Hot Module Replacement)
+- Watches files for changes & performs HMR (Hot Module Replacement)
 - Extracts CSS from Svelte components to a single CSS file
+- Console build process logging
+- .env support in all src files
+
+## JS Features:
+
+- [Typescript](https://www.typescriptlang.org/docs) & [svelte](https://svelte.dev/docs)
+- aescripts CEP framework integration
+  - incl. shared, centralized prefs management
+- Logging to file with standard ZL log methods
+- Capture events dispatched from jsx
+- Includes Adobe's [Spectrum CSS](https://github.com/adobe/spectrum-css)
+- Debug in-browser with `npm run start:browser` instead of `npm run start`
+- Automatic mangling of `obj["key"]`-style keys, for greater obfuscation & security
+
+## JSX Features:
+
+- [Typescript](https://www.typescriptlang.org/docs) & [aequery](https://www.npmjs.com/package/aequery)
+- `console.log/warn/error` to print to debugger console
+- `Log.debug/trace/info/warning/error/fatal` to print to console & log file
+- Functions written to `$.global[Config.id]`
+- Allows separate Extendscript files for each Adobe CC app
+  - Use one extendscript.config.js per file, or:
+  - in your `jsx/main.ts`, check hostapp and route to specific code for each.
+
+---
 
 # Getting Started
 
-### Clone the starter with [Degit](https://github.com/Rich-Harris/degit).
+## Clone the starter with [Degit](https://github.com/Rich-Harris/degit).
+
 This clones the repo without the whole Git history.
+
 ```bash
-npx degit Klustre/cep-svelte-starter my-svelte-panel
+npx degit zlovatt/zl-template-svelte zlovatt-svelte-template
 ```
 
-### Install dependencies
+## Install dependencies
+
 ```bash
-cd my-svelte-panel
+cd zlovatt-svelte-template
 npm install
 ```
 
-### Start the dev environment
+## Start the dev environment
+
 ```bash
 npm start
 ```
 
-### Open your favorite Adobe CC app
+## Mandatory edits
+
+- `package.json` - Define CEP panel & general info
+- `/src/` - Set up config / prefkey / everything
+- `.env` - Set analytics code & CEP signing
+  - See `.env.example` for reference
+
 Find the extension under `Window > Extensions` and start developing 👍
 
+---
+
 # Troubleshooting
-1. When running `npm start`, Webpack's dev server loads the files in memory instead of building to `/dist`. When you run `npm run build` it builds all files to `/dist`
 
-1. On Windows you'll have to change:
-    - `export IS_DEV=1` to `set IS_DEV=1`
-    - `sleep 5` to `timeout 5`
+## 'undefined' svelte modules
 
-1. Using any Svelte modules throws an error where the component is `undefined`. This is likely due to a double inclusion of `svelte/internal`.  
+Using any Svelte modules throws an error where the component is `undefined`. This is likely due to a double inclusion of `svelte/internal`.
 
-    Possible workarounds:
-    - **Import the module from `svelte/internal`**  
-    `import { createEventDispatcher } from 'svelte/internal'`
-    - **Remove the modules from Svelte after npm install**  
-    `"postinstall": "rimraf node_modules/svelte/*.mjs"`
+Possible workarounds:
 
-    *See https://github.com/sveltejs/svelte/issues/2896 and https://github.com/DeMoorJasper/parcel-plugin-svelte/issues/46#issuecomment-494556534*
+- **Import the module from `svelte/internal`**
+  `import { createEventDispatcher } from 'svelte/internal'`
+- **Remove the modules from Svelte after npm install**
+  `"postinstall": "rimraf node_modules/svelte/*.mjs"`
 
-# Webpack and CEP-Bundler
-
-The bundler automatically:
-- Starts a local server
-- Generates the `manifest.xml` and `.debug` files
-- Symlinks the `/dist` folder to the current user's extensions folder
-- Copies Node `dependencies` to `/dist/node_modules`
-- Copies everything in `/public` to `/dist`
-
-*Learn more at: [Webpack](https://github.com/webpack/webpack) and [cep-bundler-webpack](https://github.com/adobe-extension-tools/cep-bundler-webpack)*
+_See https://github.com/sveltejs/svelte/issues/2896 and https://github.com/DeMoorJasper/parcel-plugin-svelte/issues/46#issuecomment-494556534_
 
 ## Configuring CEP-Bundler
 
-`panel.config.js` & `extendscript.config.js`
+`/scripts/config/panel.config.js` & `/scripts/config/extendscript.config.js`
 
-*See [cep-bundler-core](https://github.com/adobe-extension-tools/cep-bundler-core)*
-
-## Svelte VSCode Extension
-
-When you open the project in [VSCode](https://code.visualstudio.com/) it will prompt you to install the [Svelte extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). This is the official Svelte language server which provides syntax highlighting and rich intellisense for Svelte components. To see the recommended extensions go to `Extensions > Views and More Actions (…) > Show Recommended Extensions`.
+_See [cep-bundler-core](https://github.com/adobe-extension-tools/cep-bundler-core)_

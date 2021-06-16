@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/",
+    "module": "esnext",
+    "allowJs": true,
+    "sourceRoot": "",
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "lib": ["dom", "es5", "es6", "es7", "esnext"],
+    "types": ["node", "svelte"],
+    "typeRoots": ["./typings"]
+  },
+  "include": [
+    "./**/*",
+    "../../node_modules/types-for-adobe/shared/PlugPlugExternalObject.ts"
+  ]
+}
