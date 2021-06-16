@@ -2,7 +2,7 @@ import * as csInterface from "cep-interface";
 import * as path from "path";
 
 // Load JSX event listeners
-import "./actions/jsxListeners";
+import "./helpers/jsxListeners";
 
 if (process.env.NODE_ENV !== "production") {
   const bundle = require("!!raw-loader!../../dist/extendscript.js");
