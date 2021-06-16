@@ -49,13 +49,13 @@ Based on [cep-svelte-starter](https://github.com/Klustre/cep-svelte-starter) fro
 This clones the repo without the whole Git history.
 
 ```bash
-npx degit zlovatt/zl-template-svelte zlovatt-svelte-template
+npx degit zlovatt/cep-svelte-starter cep-svelte-starter
 ```
 
 ## Install dependencies
 
 ```bash
-cd zlovatt-svelte-template
+cd cep-svelte-starter
 npm install
 ```
 
