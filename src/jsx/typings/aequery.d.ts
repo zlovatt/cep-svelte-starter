@@ -1,6 +1,6 @@
 declare var aeq: AEQuery;
 
-declare class AEQuery {
+declare interface AEQuery {
   /** Module for interacting with AE itself */
   app: AEQAppClass;
 
@@ -31,10 +31,8 @@ declare class AEQuery {
   /** Module for dealing with ScriptUI */
   ui: AEQUIClass;
 
-
-
   /** Array with some extensions that mimics modern JavaScript. */
-  arrayEx(items?: Array<T>): AEQArrayEx<T>;
+  arrayEx<T = any>(items?: Array<T>): AEQArrayEx<T>;
 
   /** Converts a CompItem into an aeq.Comp object */
   Comp(comp: CompItem): AEQComp;
@@ -47,9 +45,6 @@ declare class AEQuery {
 
   /** Converts a Property into an aeq.Property object */
   Property(property: Property): AEQProperty;
-
-
-
 
   /** Checks if value is null. Throws an error if it is not. */
   assertIsNull(o: any, err: string): o is null;
@@ -68,8 +63,6 @@ declare class AEQuery {
 
   /** Checks if array is not empty. Throws an error if it is. */
   assertIsNotEmpty(o: Array<any>, err: string): boolean;
-
-
 
   /** Gets all the item in a folder or project. */
   getItems(folder?: FolderItem, deep?: boolean): AEQArrayEx<Item>;
@@ -99,16 +92,24 @@ declare class AEQuery {
   getSelectedLayersOrAll(comp?: CompItem): AEQArrayEx<Layer>;
 
   /** Gets the selected properties on a layer or in a comp. Uses the active comp if no argument is given. */
-  getSelectedProperties(obj?: CompItem | Layer): AEQArrayEx<Property | PropertyGroup>;
+  getSelectedProperties(
+    obj?: CompItem | Layer
+  ): AEQArrayEx<Property | PropertyGroup>;
 
   /** Gets all Property objects of all Layer objects in an array. */
-  getProperties(layers: Layer[], options?: AEQGetPropertyChildrenOptions): AEQArrayEx<Property | PropertyGroup | MaskPropertyGroup>
+  getProperties(
+    layers: Layer[],
+    options?: AEQGetPropertyChildrenOptions
+  ): AEQArrayEx<Property | PropertyGroup | MaskPropertyGroup>;
 
   /** Gets all children of the given layer or propertyGroup. */
-  getPropertyChildren(parent: Layer|PropertyGroup, options?: AEQGetPropertyChildrenOptions): AEQArrayEx<Property | PropertyGroup | MaskPropertyGroup>
+  getPropertyChildren(
+    parent: Layer | PropertyGroup,
+    options?: AEQGetPropertyChildrenOptions
+  ): AEQArrayEx<Property | PropertyGroup | MaskPropertyGroup>;
 
   /** Gets the propertyGroups inside the effects group from all layers given. */
-  getEffects(layers:Layer|Array<Layer>): AEQArrayEx<PropertyGroup>;
+  getEffects(layers: Layer | Array<Layer>): AEQArrayEx<PropertyGroup>;
 
   /** Gets the Marker property group from the given layer or comp. */
   getMarkerGroup(obj: Layer | CompItem): PropertyGroup | null;
@@ -116,37 +117,55 @@ declare class AEQuery {
   /** Gets all keys on the given property or array of properties. */
   getKeys(prop: Property | Property[]): AEQArrayEx<AEQKey>;
 
-
-
   /** Loops through arrays and objects */
-  forEach(obj: Array<T>, callback: forEachArrayCallback<T>, fromIndex?: number): void;
-  forEach(obj: object, callback: forEachArrayCallback<T>, fromIndex?: number): void;
+  forEach<T>(
+    obj: T[],
+    callback: ForEachArrayCallback<T>,
+    fromIndex?: number
+  ): void;
+  forEach<T>(
+    obj: object,
+    callback: ForEachArrayCallback<T>,
+    fromIndex?: number
+  ): void;
 
   /** Loops through the layers of a comp, array of comps, or all layers in the project, and executes a function for each one. */
-  forEachLayer(obj: CompItem | CompItem[], callback: forEachArrayCallback<any>): AEQuery;
+  forEachLayer(
+    obj: CompItem | CompItem[],
+    callback: ForEachArrayCallback<any>
+  ): AEQuery;
 
   /** Loops through the properties of a Comp, Layer, PropertyGroup, or an array of any of them, and executes a function for each one. */
-  forEachProperty(obj: CompItem|Layer|PropertyGroup|Array<any>|forEachArrayCallback<any>, callback: forEachArrayCallback<any>): AEQuery;
+  forEachProperty(
+    obj: CompItem | Layer | PropertyGroup | any[] | ForEachArrayCallback<any>,
+    callback: ForEachArrayCallback<any>
+  ): AEQuery;
 
   /** Loops through the effects in a Comp, or on a Layer, and executes a function for each one.. */
-  forEachEffect(obj: CompItem|Layer|Array, callback: forEachArrayCallback<any>): AEQuery;
+  forEachEffect(
+    obj: CompItem | Layer | any[],
+    callback: ForEachArrayCallback<any>
+  ): AEQuery;
 
   /** Loops through the comps in a project and executes a function for each one. */
-  forEachComp(callback: forEachArrayCallback<CompItem>): void;
+  forEachComp(callback: ForEachArrayCallback<CompItem>): void;
 
   /** Loops through the Project items in a project and executes a function for each one. */
-  forEachItem(callback: forEachArrayCallback<Item>): AEQuery;
+  forEachItem(callback: ForEachArrayCallback<Item>): AEQuery;
 
   /** Loops through the items in the renderqueue and executes a function for each one. */
-  forEachRenderQueueItem(callback: forEachArrayCallback<RenderQueueItem>): AEQuery;
+  forEachRenderQueueItem(
+    callback: ForEachArrayCallback<RenderQueueItem>
+  ): AEQuery;
 
   /** Loops through the output modules in the renderqueue and executes a function for each one. */
-  forEachOutputModule(callback: forEachArrayCallback<OutputModule>): AEQuery;
+  forEachOutputModule(callback: ForEachArrayCallback<OutputModule>): AEQuery;
 
   /** Runs callback on each element, and returns a new arrayEx of elements that trigger callback === true */
-  filter(obj: Array|object, callback: boolArrayCallback<T>): AEQArrayEx<T>;
-
-
+  filter(
+    obj: any[] | object,
+    callback: PredicateCallback<any>
+  ): AEQArrayEx<any>;
 
   /** Returns `true` if argument is null or undefined */
   isNullOrUndefined(o: any): o is undefined;
@@ -167,7 +186,7 @@ declare class AEQuery {
   isPlainObject(o: any): boolean;
 
   /** Returns `true` if argument is an array */
-  isArray(o: any): o is Array;
+  isArray(o: any): o is Array<any>;
 
   /** Returns `true` if the passed array is empty */
   isEmpty(o: Array<any>): boolean;
@@ -238,8 +257,6 @@ declare class AEQuery {
   /** `true` if system is a Windows */
   isWindows: boolean;
 
-
-
   /** AEQ Version */
   version: string;
 
@@ -247,16 +264,21 @@ declare class AEQuery {
   getSystemInfo(): string;
 
   /** Creates and alerts an aequery error from a JS error */
-  error(err: Error, args: any): AEQuery
+  error(err: Error, args: any): AEQuery;
 
   /** Used for setting the default value in functions. Returns the first argument is not undefined, else it returns `defaultVal`. */
-  setDefault(value: T, defaultVal: T): T;
+  setDefault(value: any, defaultVal: any): any;
 
   /** Returns a pressed-state object of modifier keys */
-  getModifiers(): {meta: boolean, ctrl: boolean, alt: boolean, shift: boolean};
+  getModifiers(): {
+    meta: boolean;
+    ctrl: boolean;
+    alt: boolean;
+    shift: boolean;
+  };
 
   /** Normalizes a collection */
-  normalizeCollection(collection: Array<T>): AEQArrayEx<T>;
+  normalizeCollection(collection: Array<any>): AEQArrayEx<any>;
 
   /** Converts frame count to time. */
   framesToTime(frames: number, frameRate: number): number;
@@ -265,13 +287,17 @@ declare class AEQuery {
   timeToFrames(time: number, frameRate: number): number;
 
   /** Saves object of name:binaryContents pairs to files, returns object of files */
-  createResourceFiles(resources: {name: contents}, folder: Folder | string, extension?: string): {name: File};
+  createResourceFiles(
+    resources: { [name: string]: string },
+    folder: Folder | string,
+    extension?: string
+  ): { name: File };
 
   /** Takes a file (or file path) and converts it to a binary string */
   getBinaryString(filePath: File | string): string;
 
   /** Creates an undoGroup and wraps passed function in it */
-  createUndoGroup(name: string, callback: function, args: any | Array): any;
+  createUndoGroup(name: string, callback: Function, args: any | any[]): any;
 
   // Shortcuts
   activeComp: typeof aeq.getActiveComposition;
@@ -333,19 +359,27 @@ declare class AEQuery {
   writeFile: typeof aeq.file.writeFile;
 }
 
-
-
 /** AEQ CALLBACKS **/
 
-declare type forEachArrayCallback<T> = (item: T, index: number, array:Array<T>) => void;
-declare type boolArrayCallback<T> = (item: T, index: number, array:Array<T>) => boolean;
-declare type anyArrayCallback<T> = (item: T, index: number, array:Array<T>) => any;
-
-
+declare type ForEachArrayCallback<T> = (
+  item: T,
+  index: number,
+  array: Array<T>
+) => void;
+declare type PredicateCallback<T> = (
+  item: T,
+  index: number,
+  array: Array<T>
+) => boolean;
+declare type MapArrayCallback<T, U> = (
+  item: T,
+  index: number,
+  array: Array<T>
+) => U;
 
 /** AEQ MODULES **/
 
-declare class AEQAppClass {
+declare interface AEQAppClass {
   /** The After Effects version */
   version: number;
 
@@ -377,12 +411,17 @@ declare class AEQAppClass {
   open(filePath: File | string): File;
 }
 
-declare class AEQCommandClass {
+declare interface AEQCommandClass {
   /** Call a command-line/system command. */
   call(windows: string, mac: string, arg?: string): string;
 
   /** Call a command-line/system command. */
-  call(commands?: {win?: string, windows?: string, mac?: string, arg?: string}): string;
+  call(commands?: {
+    win?: string;
+    windows?: string;
+    mac?: string;
+    arg?: string;
+  }): string;
 
   /** Opens the given URL in the default web browser */
   openURL(url: string): void;
@@ -394,13 +433,16 @@ declare class AEQCommandClass {
   copyToClipboard(text: string): void;
 }
 
-declare class AEQCompClass {
+declare interface AEQCompClass {
   /** Creates a comp with the given settings */
   create(folder: FolderItem | string, options: AEQCompCreateOptions): CompItem;
   create(options?: AEQCompCreateOptions): CompItem;
 
   /** Gets the `RenderQueueItem`s that references a given comp. */
-  getCompInQueue(comp: CompItem, queuedOnly?: boolean): AEQArrayEx<RenderQueueItem>;
+  getCompInQueue(
+    comp: CompItem,
+    queuedOnly?: boolean
+  ): AEQArrayEx<RenderQueueItem>;
 
   /** Check if a comp is in the Render Queue, regardless of it being queued or not. */
   isInQueue(comp: CompItem): boolean;
@@ -409,7 +451,7 @@ declare class AEQCompClass {
   isQueued(comp: CompItem): boolean;
 }
 
-declare class AEQFileClass {
+declare interface AEQFileClass {
   /** The value of the OS's file system path separator symbol; \ or / */
   pathSeparatorSymbol: string;
 
@@ -437,10 +479,16 @@ declare class AEQFileClass {
   getFile(filePath: File | string): File | null;
 
   /** Gets all files in target path that matches filter (or, all files if no filter) */
-  getFiles(folderPath: Folder | string, filter?: string | function): AEQArrayEx<File> | null;
+  getFiles(
+    folderPath: Folder | string,
+    filter?: string | Function
+  ): AEQArrayEx<File> | null;
 
   /** Gets all files in target path that matches filter (or, all files if no filter) */
-  getFilesRecursive(folderPath: Folder | string, filter?: string | function): AEQArrayEx<File> | null;
+  getFilesRecursive(
+    folderPath: Folder | string,
+    filter?: string | Function
+  ): AEQArrayEx<File> | null;
 
   /** Takes a folder path or a folder object, and returns a folder object */
   getFolderObject(folderPath: Folder | string): Folder;
@@ -455,16 +503,23 @@ declare class AEQFileClass {
   readFile(filePath: File | string, encoding?: string): string | null;
 
   /** Writes data to a file, returns file */
-  writeFile(filePath: File | string, contents: string, options?: AEQWriteFileOptions): File | null;
+  writeFile(
+    filePath: File | string,
+    contents: string,
+    options?: AEQWriteFileOptions
+  ): File | null;
 
   /** Prompts user to select files */
-  selectFiles(extensionList: string[], multiSelect = false): AEQArrayEx<File> | null;
+  selectFiles(
+    extensionList: string[],
+    multiSelect?: false
+  ): AEQArrayEx<File> | null;
 
   // Shortcuts
   get: typeof aeq.file.getFile;
 }
 
-declare class AEQLayerClass {
+declare interface AEQLayerClass {
   /** Copies the state of layer toggles from one layer to another. */
   copyLayerToggles(sourceLayer: Layer, destLayer: Layer): void;
 
@@ -481,18 +536,24 @@ declare class AEQLayerClass {
   relatedLayers(root: Layer): AEQArrayEx<Layer>;
 }
 
-declare class AEQProjectClass {
+declare interface AEQProjectClass {
   /** Gets all footage items in project */
-  getFootage(parentFolder?: FolderItem|string): AEQArrayEx<Item>;
+  getFootage(parentFolder?: FolderItem | string): AEQArrayEx<FootageItem>;
 
   /** Gets all folders within target folder, or root */
-  getFolders(parentFolder?: FolderItem|string): AEQArrayEx<FolderItem>;
+  getFolders(parentFolder?: FolderItem | string): AEQArrayEx<FolderItem>;
 
   /** Find folder by name in target folder. */
-  findFolder(name: string, parentFolder?: FolderItem|string): FolderItem | null;
+  findFolder(
+    name: string,
+    parentFolder?: FolderItem | string
+  ): FolderItem | null;
 
   /** Gets folder item, or null if can't find */
-  getFolder(folder: FolderItem | string, parentFolder?: FolderItem | string): FolderItem | null;
+  getFolder(
+    folder: FolderItem | string,
+    parentFolder?: FolderItem | string
+  ): FolderItem | null;
 
   /** Gets all folder items that are selected */
   getSelectedFolders(): AEQArrayEx<FolderItem>;
@@ -507,7 +568,10 @@ declare class AEQProjectClass {
   getSelectedFootage(): AEQArrayEx<FootageItem>;
 
   /** Gets folder item, or creates it if can't find */
-  getOrCreateFolder(folder: FolderItem | string, parentFolder?: FolderItem | string): FolderItem;
+  getOrCreateFolder(
+    folder: FolderItem | string,
+    parentFolder?: FolderItem | string
+  ): FolderItem;
 
   /** Gets folder item, or root if undefined */
   getFolderOrRoot(folder?: FolderItem | string): FolderItem;
@@ -519,16 +583,24 @@ declare class AEQProjectClass {
   quickSave(): File;
 
   /** Imports a file into After Effects. */
-  importFile(file: File | string, folder?: FolderItem | string, options?: {sequence: boolean}): Item;
+  importFile(
+    file: File | string,
+    folder?: FolderItem | string,
+    options?: { sequence: boolean }
+  ): Item;
 
   /** aeq.project.importFile without the extra */
-  simpleImportFile(file: File, options?: {sequence: boolean}): Item;
+  simpleImportFile(file: File, options?: { sequence: boolean }): Item;
 
   /** Imports a sequence by file object or path */
   importSequence(file: File | string, folder?: FolderItem): Item;
 
   /** Imports array of files or paths to target folder */
-  importFiles(fileArray: File[] | string[], folder?: FolderItem, options?: {sequence: boolean}): AEQArrayEx<Item>;
+  importFiles(
+    fileArray: File[] | string[],
+    folder?: FolderItem,
+    options?: { sequence: boolean }
+  ): AEQArrayEx<Item>;
 
   /** Moves item(s) to specified folder */
   moveToFolder(items: Item | Item[], folder: FolderItem): void;
@@ -537,7 +609,7 @@ declare class AEQProjectClass {
   reduceToQueuedComps(): AEQArrayEx<CompItem> | null;
 }
 
-declare class AEQPropertyClass {
+declare interface AEQPropertyClass {
   /** Returns the property value type of a Property as a string. */
   valueType(property: Property): string;
 
@@ -548,7 +620,7 @@ declare class AEQPropertyClass {
   getLayer(property: Property): Layer;
 }
 
-declare class AEQRenderQueueClass {
+declare interface AEQRenderQueueClass {
   /** Add a project item to the render queue. */
   queue(item: Item): RenderQueueItem;
 
@@ -586,12 +658,17 @@ declare class AEQRenderQueueClass {
   rqTemplateExists(templateName: string): boolean;
 }
 
-declare class AEQSettingsClass {
+declare interface AEQSettingsClass {
   /** Saves setting if present, else gets setting */
   setting(sectionName: string, keyName: string, value?: string): string;
 
   /** Initializes a setting, setting it if not present */
-  initSetting(sectionName: string, keyName: string, value?: string, overwrite?: boolean): string;
+  initSetting(
+    sectionName: string,
+    keyName: string,
+    value?: string,
+    overwrite?: boolean
+  ): string;
 
   /** Gets setting from section:key */
   get(sectionName: string, keyName: string): string | undefined;
@@ -622,51 +699,52 @@ declare class AEQSettingsClass {
   load: typeof aeq.settings.unpack;
 }
 
-
-
 /** AEQ CUSTOM OBJECTS **/
 
-declare class AEQArrayEx<T> extends Array<T> {
+declare interface AEQArrayEx<T> extends Array<T> {
   /** Loops through the elements in the array and executes a function */
-  forEach(callback: forEachArrayCallback<T>): void;
+  forEach(callback: ForEachArrayCallback<T>): void;
 
   /** Loops through the elements in the array and returns `true` if callback returns true for any element */
-  some(callback: boolArrayCallback<T>): boolean;
+  some(callback: PredicateCallback<T>): boolean;
 
   /** Loops through the elements in the array and returns `true` if callback returns true for all elements */
-  every(callback: boolArrayCallback<T>): boolean;
+  every(callback: PredicateCallback<T>): boolean;
 
   /** Gets first element in array */
   first(): T;
 
+  /** Groups all elements based on a provided key */
+  groupBy(callback: (value: T) => unknown): { [key: string]: T[] };
+
   /** Returns array element that triggers callback === true */
-  find(callback: boolArrayCallback<T>, def?: T): T;
+  find(callback: PredicateCallback<T>, def?: T): T;
 
   /** Returns index of array element that triggers callback === true */
-  findIndex(callback: boolArrayCallback<T>): number;
+  findIndex(callback: PredicateCallback<T>): number;
 
   /** Runs callback on each element, and returns a new arrayEx of elements that trigger callback === true */
-  filter(callback: boolArrayCallback<T>): AEQArrayEx<T>;
+  filter(callback: PredicateCallback<T>): AEQArrayEx<T>;
 
   /** Returns index of searchElement in an array, or -1 if not found */
-  indexOf(searchElement: T, fromIndex = 0): number;
+  indexOf(searchElement: T, fromIndex?: 0): number;
 
   /** Creates a new array with the results of calling a provided function on every element in the calling array */
-  map(callback: anyArrayCallback<T>): AEQArrayEx<any>;
+  map<U>(callback: MapArrayCallback<T, U>): AEQArrayEx<U>;
 
   /** Inserts an element into arrayEx at specified index */
   insertAt(insert: T, index: number): void;
 }
 
-declare class AEQComp extends CompItem {
+declare interface AEQComp extends CompItem {
   /** Get the original object */
   get(): CompItem;
 
   /** Runs a function on each layer in aeq.Comp object */
-  forEachLayer(callback: forEachArrayCallback<Layer>): void;
+  forEachLayer(callback: ForEachArrayCallback<Layer>): void;
 }
 
-declare class AEQKey {
+declare interface AEQKey {
   /** Used to check if the key index is the correct for refrensing */
   checkKey(): void;
 
@@ -674,13 +752,24 @@ declare class AEQKey {
   getTime(): number;
 
   /** Gets or sets interpolation type of current key */
-  interpolationType(inType?: KeyframeInterpolationType, outType?: KeyframeInterpolationType): {inType: KeyframeInterpolationType, outType: KeyframeInterpolationType} | boolean;
+  interpolationType(
+    inType?: KeyframeInterpolationType,
+    outType?: KeyframeInterpolationType
+  ):
+    | { inType: KeyframeInterpolationType; outType: KeyframeInterpolationType }
+    | boolean;
 
   /** Gets or sets in/out spatial tangents of current key */
-  spatialTangent(inType?: number[], outType?: number): {inTangent: number[], outTangent: number[]}
+  spatialTangent(
+    inType?: number[],
+    outType?: number[]
+  ): { inTangent: number[]; outTangent: number[] };
 
   /** Gets or sets in/out temporal ease of current key */
-  temporalEase(inType?: KeyframeEase[], outType?: KeyframeEase[]): {inEase: KeyframeEase[], outEase: KeyframeEase[]};
+  temporalEase(
+    inType?: KeyframeEase[],
+    outType?: KeyframeEase[]
+  ): { inEase: KeyframeEase[]; outEase: KeyframeEase[] };
 
   /** Gets comp time of current key */
   time(): number;
@@ -699,10 +788,9 @@ declare class AEQKey {
 
   /** Checks whether this property type matches argument */
   valueTypeIs(type: string): boolean;
-
 }
 
-declare class AEQLayer {
+declare interface AEQLayer {
   /** Get the original object */
   get(): Layer;
 
@@ -716,7 +804,7 @@ declare class AEQLayer {
   removeParent(): AEQLayer;
 
   /** Executes a callback function on each effect on this layer */
-  forEachEffect(callback: forEachArrayCallback<Property>): AEQLayer;
+  forEachEffect(callback: ForEachArrayCallback<Property>): AEQLayer;
 
   /** Adds effect to layer by name or matchname */
   addEffect(effectName: string): void;
@@ -734,7 +822,7 @@ declare class AEQLayer {
   relatedLayers(): AEQArrayEx<AEQLayer>;
 }
 
-declare class AEQProperty {
+declare interface AEQProperty {
   /** Get the original object */
   get(): Property;
 
@@ -769,16 +857,22 @@ declare class AEQProperty {
   minValue(): number | null;
 
   /** Gets or sets property value */
-  value(newValue?: T): T | void;
+  value(newValue?: any): any | void;
 
   /** Get or set the value of the current property as evaluated at the specified time */
-  valueAtTime(time: number, value?: T): T | number;
+  valueAtTime(
+    time: number,
+    value?: typeof PropertyValueType
+  ): typeof PropertyValueType | number;
 
   /** Get or sets values for a set of keyframes at specified times */
-  valuesAtTimes(times: number[], values?: T[]): T[] | number[];
+  valuesAtTimes(
+    times: number[],
+    values?: typeof PropertyValueType[]
+  ): typeof PropertyValueType[] | number[];
 
   /** Runs a function on each key in current property */
-  forEachKey(callback: forEachArrayCallback<AEQKey>): void;
+  forEachKey(callback: ForEachArrayCallback<AEQKey>): void;
 
   /** Returns a aeq.Key object for specific key index */
   key(keyIndex: number): AEQKey;
@@ -787,7 +881,7 @@ declare class AEQProperty {
   getKeys(): AEQArrayEx<AEQKey>;
 }
 
-declare class AEQUIContainer<T> {
+declare interface AEQUIContainer<T> {
   obj: T;
 
   /** Get the original object */
@@ -811,31 +905,65 @@ declare class AEQUIContainer<T> {
   /** Remove all items in a container */
   removeAll(): void;
 
-
-
   /** Add a Button to this container */
-  addButton(buttonText: string, onClick?: Function, creationProperties?: Partial<_AddControlPropertiesButton>): Button;
+  addButton(
+    buttonText: string,
+    onClick?: Function,
+    creationProperties?: Partial<_AddControlProperties>
+  ): Button;
 
   /** Add a Checkbox to this container */
-  addCheckbox(checkboxLabel: string, onClick?: Function, creationProperties?: Partial<_AddControlPropertiesCheckbox>): Checkbox;
+  addCheckbox(
+    checkboxLabel: string,
+    onClick?: Function,
+    creationProperties?: Partial<_AddControlProperties>
+  ): Checkbox;
 
   /** Add a DropdownList to this container */
-  addDropdownList(items?: string[], onChange?: Function, creationProperties?: Partial<_AddControlPropertiesDropDownList>): DropDownList;
+  addDropdownList(
+    items?: string[],
+    onChange?: Function,
+    creationProperties?: Partial<_AddControlPropertiesDropDownList>
+  ): DropDownList;
 
   /** Add a EditText to this container */
-  addEditText(text?: string, onChange?: Function, onChanging?: Function, creationProperties?: Partial<_AddControlPropertiesEditText>): EditText;
+  addEditText(
+    text?: string,
+    onChange?: Function,
+    onChanging?: Function,
+    creationProperties?: Partial<_AddControlPropertiesEditText>
+  ): EditText;
 
   /** Add a Group to this container */
   addGroup(properties?: any): AEQUIContainer<Group>;
 
   /** Add an IconButton to this container */
-  addIconButton(icon: File | string, onClick?: Function, creationProperties?: Partial<_AddControlPropertiesIconButton>): IconButton;
+  addIconButton(
+    icon: File | string,
+    onClick?: Function,
+    creationProperties?: Partial<_AddControlPropertiesIconButton>
+  ): IconButton;
 
   /** Add an Image to this container */
-  addImage(image: ScriptUIImage, onClick?: Function, creationProperties?: Partial<_AddControlPropertiesImage>): Image;
+  addImage(
+    image: ScriptUIImage,
+    onClick?: Function,
+    creationProperties?: Partial<_AddControlProperties>
+  ): Image;
 
   /** Add a ListBox to this container */
-  addListBox(items: string[], onChange?: Function, onDoubleClick?: Function, creationProperties?: Partial<_AddControlPropertiesListBox>): AEQUIListBox;
+  addListBox(
+    items: string[],
+    onChange?: Function,
+    onDoubleClick?: Function,
+    creationProperties?: Partial<_AddControlPropertiesListBox>
+  ): AEQUIListbox;
+  addListbox(
+    items: string[],
+    onChange?: Function,
+    onDoubleClick?: Function,
+    creationProperties?: Partial<_AddControlPropertiesListBox>
+  ): AEQUIListbox;
 
   /** Add a Panel to this container */
   addPanel(label?: string, creationProperties?: any): AEQUIContainer<Panel>;
@@ -845,36 +973,67 @@ declare class AEQUIContainer<T> {
   addProgressbar(value: number, maxValue: number): Progressbar;
 
   /** Add a RadioButton to this container */
-  addRadioButton(label: string, creationProperties?: Partial<_AddControlPropertiesRadioButton>): RadioButton;
+  addRadioButton(
+    label: string,
+    creationProperties?: Partial<_AddControlProperties>
+  ): RadioButton;
 
   /** Add a Scrollbar to this container */
-  addScrollbar(value: number, maxValue: number, onChange?: Function, onChanging?: Function): Scrollbar;
+  addScrollbar(
+    value: number,
+    maxValue: number,
+    onChange?: Function,
+    onChanging?: Function
+  ): Scrollbar;
 
   /** Add a Slider to this container */
-  addSlider(value: number, minValue: number, maxValue: number, onChange?: Function, onChanging?: Function): Slider;
+  addSlider(
+    value: number,
+    minValue: number,
+    maxValue: number,
+    onChange?: Function,
+    onChanging?: Function
+  ): Slider;
 
   /** Add a StaticText to this container */
-  addStaticText(text: string, creationProperties?: Partial<_AddControlPropertiesStaticText>): StaticText;
+  addStaticText(
+    text: string,
+    creationProperties?: Partial<_AddControlPropertiesStaticText>
+  ): StaticText;
+  addStatictext(
+    text: string,
+    creationProperties?: Partial<_AddControlPropertiesStaticText>
+  ): StaticText;
 
   /** Add a Tab to this container */
-  addTab(label: string, creationProperties?: Partial<_AddControlPropertiesTab>): AEQUIContainer<Tab>;
+  addTab(
+    label: string,
+    creationProperties?: Partial<_AddControlProperties>
+  ): AEQUIContainer<Tab>;
 
   /** Add a TabbedPanel to this container */
-  addTabbedPanel(creationProperties?: Partial<_AddControlPropertiesTabbedPanel>): AEQUIContainer<TabbedPanel>;
+  addTabbedPanel(
+    creationProperties?: Partial<_AddControlProperties>
+  ): AEQUIContainer<TabbedPanel>;
 
   /** Add a TreeView to this container */
-  addTreeView(items: string[], onChange?: Function, creationProperties?: Partial<_AddControlPropertiesTreeView>): AEQUITreeView;
-
-  // Shortcuts
-  addListbox: typeof AEQUIContainer.prototype.addListBox;
-  addStatictext: typeof AEQUIContainer.prototype.addStaticText;
-  addTreeview: typeof AEQUIContainer.prototype.addTreeView;
+  addTreeView(
+    items: string[],
+    onChange?: Function,
+    creationProperties?: Partial<_AddControlPropertiesTreeView>
+  ): AEQUITreeView;
+  addTreeview(
+    items: string[],
+    onChange?: Function,
+    creationProperties?: Partial<_AddControlPropertiesTreeView>
+  ): AEQUITreeView;
 }
 
-declare class AEQUIListbox {
+declare interface AEQUIListbox {
   obj: ListBox;
 
   /** Adds a ListItem to this ListBox */
+  add(text: string, image?: ScriptUIImage, index?: number): ListItem;
   addItem(text: string, image?: ScriptUIImage, index?: number): ListItem;
 
   /** Removes a ListItem from this list */
@@ -909,19 +1068,21 @@ declare class AEQUIListbox {
 
   /** Gets the selection in a list */
   getSelection(): AEQArrayEx<ListItem>;
-
-  // Shortcuts
-  add: typeof AEQUIListbox.prototype.addItem;
 }
 
-declare class AEQUITreeView extends AEQUIListbox {
-  obj: TreeView;
+declare interface AEQUITreeView extends AEQUIListbox {
+  // obj: TreeView;
 
   /** Reveals (expands) an item in a treeview by name */
   revealItem(name: string): void;
 
   /** Adds a node to a UITreeView */
-  addNode(text: string, image?: ScriptUIImage, index?: number, expanded?: boolean): AEQUITreeView;
+  addNode(
+    text: string,
+    image?: ScriptUIImage,
+    index?: number,
+    expanded?: boolean
+  ): AEQUITreeView;
 
   /** Removes ancestor of node */
   removeAncestor(item: ListItem): void;
@@ -945,7 +1106,7 @@ declare class AEQUITreeView extends AEQUIListbox {
   isItem(branch: ListItem): boolean;
 }
 
-declare class AEQUIWindow<T> extends AEQUIContainer<T> {
+declare interface AEQUIWindow<T> extends AEQUIContainer<T> {
   obj: T;
 
   /** Shows a window */
@@ -961,25 +1122,63 @@ declare class AEQUIWindow<T> extends AEQUIContainer<T> {
   layout(): void;
 }
 
-declare class AEQUIClass {
+declare interface AEQUIClass {
   /** Creates a UI Main Window */
-  createMainWindow(thisObj: Panel, title: string, options?: {resizable: boolean}): AEQUIWindow<Panel | Window>;
+  createMainWindow(
+    thisObj: Panel,
+    title: string,
+    options?: { resizable: boolean }
+  ): AEQUIWindow<Panel | Window>;
 
   /** Creates a UI Dialog */
-  createWindow(title: string, options?: {resizable: boolean}): AEQUIWindow<Window>;
+  createWindow(
+    title: string,
+    options?: { resizable: boolean }
+  ): AEQUIWindow<Window>;
 
   /** Creates a UI Dialog */
-  createDialog(title: string, options?: {resizable: boolean}): AEQUIWindow<Window>;
+  createDialog(
+    title: string,
+    options?: { resizable: boolean }
+  ): AEQUIWindow<Window>;
 
   /** Sets properties onto an item */
-  set(obj: _Control | AEQUIContainer, options: object): void;
+  set(
+    obj: _Control | AEQUIContainer<Panel | Group | Tab | TabbedPanel>,
+    options: object
+  ): void;
 }
-
-
 
 /** AEQ SUBOBJECTS **/
 
-declare class AEQKeyInfo {
+declare interface SpatialTangent {
+  /** Tangent for keyIn */
+  inTangent: KeyframeSpatialTangent;
+
+  /** Tangent for keyOut */
+  outTangent: KeyframeSpatialTangent;
+}
+
+declare type KeyframeSpatialTangent = [
+  xSpatialTangent: number,
+  ySpatialTangent: number,
+  zSpatialTangent?: number
+];
+
+declare interface TemporalEase {
+  /** TemporalEase for keyIn */
+  inEase: KeyframeEase[];
+
+  /** TemporalEase for keyOut */
+  outEase: KeyframeEase[];
+}
+
+declare interface InterpolationType {
+  inType: KeyframeInterpolationType;
+  outType: KeyframeInterpolationType;
+}
+
+declare interface AEQKeyInfo {
   /** Prop that the key lives on */
   property: Property;
 
@@ -1014,7 +1213,7 @@ declare class AEQKeyInfo {
   roving: boolean;
 }
 
-declare class AEQWriteFileOptions {
+declare interface AEQWriteFileOptions {
   /** Whether to overwrite file if already exists */
   overwrite?: boolean;
 
@@ -1022,7 +1221,7 @@ declare class AEQWriteFileOptions {
   encoding?: string;
 }
 
-declare class AEQCompCreateOptions {
+declare interface AEQCompCreateOptions {
   name?: string;
   width?: number;
   height?: number;
@@ -1031,7 +1230,7 @@ declare class AEQCompCreateOptions {
   frameRate?: number;
 }
 
-declare class AEQGetPropertyChildrenOptions {
+declare interface AEQGetPropertyChildrenOptions {
   /** set to true to separate properties */
   separate?: boolean;
 
