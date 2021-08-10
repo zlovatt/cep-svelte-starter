@@ -14,6 +14,6 @@
   },
   "include": [
     "./**/*",
-    "../../node_modules/types-for-adobe/shared/PlugPlugExternalObject.ts"
+    "../../node_modules/types-for-adobe/shared/PlugPlugExternalObject.d.ts"
   ]
 }
