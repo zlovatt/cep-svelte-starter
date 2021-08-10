@@ -3,10 +3,6 @@ import Log from "./utils/log";
 import explode from "./actions/explode";
 import buildError from "./utils/buildError";
 
-declare var BridgeTalk: any;
-declare var $: any;
-declare var app: any;
-
 function runCommand() {
   Log.trace("→ runCommand");
 
