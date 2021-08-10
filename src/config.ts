@@ -17,7 +17,7 @@ const Config = {
     debug: process.env.NODE_ENV === "development",
     resourcePath: path.join(
       process.env.APPDATA || process.env.HOME + "/Library/Application Support",
-      "aescripts",
+      "zlovatt",
       pkg.cep.name
     ),
     logMaxSize: 5000000

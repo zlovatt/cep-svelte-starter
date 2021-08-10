@@ -24,8 +24,7 @@ Based on [cep-svelte-starter](https://github.com/Klustre/cep-svelte-starter) fro
 ## JS Features:
 
 - [Typescript](https://www.typescriptlang.org/docs) & [svelte](https://svelte.dev/docs)
-- aescripts CEP framework integration
-  - incl. shared, centralized prefs management
+- Centralized prefs file management
 - Logging to file with standard ZL log methods
 - Capture events dispatched from jsx
 - Includes Adobe's [Spectrum CSS](https://github.com/adobe/spectrum-css)

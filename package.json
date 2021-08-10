@@ -15,13 +15,13 @@
   },
   "cep": {
     "name": "ZL Template",
-    "id": "com.aescripts.zltemplate",
+    "id": "com.zlovatt.zltemplate",
     "debugInProduction": true,
     "hosts": "AEFT",
     "extensions": [
       {
         "type": "Panel",
-        "id": "com.aescripts.zltemplate.panel",
+        "id": "com.zlovatt.zltemplate.panel",
         "name": "___Z TS Svelte Starter",
         "htmlFilename": "./index.html",
         "panelWidth": 840,
