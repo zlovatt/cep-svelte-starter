@@ -7,7 +7,7 @@
     "strict": true,
     "noLib": true,
     "types": [
-      "AfterEffects/2018",
+      "AfterEffects/18.0",
       "node"
     ],
     "typeRoots": [
